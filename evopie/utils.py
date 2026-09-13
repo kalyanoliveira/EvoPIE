@@ -13,6 +13,14 @@ def sanitize(html):
     result = bleach.clean(html, tags=generally_xss_safe, attributes=print_attrs, styles=standard_styles)
     return result
 
+def prepare_rich_html(value):
+    """Return sanitized HTML for fields that explicitly allow rich content."""
+    return sanitize(value)
+
+def prepare_plain_text(value):
+    """Return plain text for fields that must not store/render HTML."""
+    return bleach.clean(value, tags=[], attributes={}, strip=True)
+
 # All TODO #3 issue from models.py are factored in the function below
 # unescaping so that the stem and answer are rendered in jinja2 template with | safe
 from jinja2 import Markup
