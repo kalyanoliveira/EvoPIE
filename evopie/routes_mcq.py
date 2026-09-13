@@ -1175,9 +1175,9 @@ def justify_alternative_selection(q, body):
             if new_j == '':
                 models.DB.session.delete(justifications[(qid, did)])    
             else:
-                justifications[(qid, did)].justification = new_j
+                justifications[(qid, did)].justification = prepare_field_value(models.Justification, "justification", new_j)
         elif new_j != '': 
-            justification = models.Justification(quiz_question_id = qid, distractor_id = did, student_id = current_user.id, justification = new_j)
+            justification = models.Justification(quiz_question_id = qid, distractor_id = did, student_id = current_user.id, justification = prepare_field_value(models.Justification, "justification", new_j))
             # resp_added_just_ids.setdefault(str(justification.quiz_question_id), {})[str(justification.distractor_id)] = justification
             models.DB.session.add(justification)
     models.DB.session.commit() #after this point all ids for added_justifications were assigned 
