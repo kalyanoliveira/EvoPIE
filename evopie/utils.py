@@ -13,13 +13,31 @@ def sanitize(html):
     result = bleach.clean(html, tags=generally_xss_safe, attributes=print_attrs, styles=standard_styles)
     return result
 
-def prepare_rich_html(value):
-    """Return sanitized HTML for fields that explicitly allow rich content."""
-    return sanitize(value)
+RICH_HTML_FIELDS = {
+    ("Course", "description"),
+    ("Distractor", "answer"),
+    ("Distractor", "justification"),
+    ("InvalidatedDistractor", "answer"),
+    ("InvalidatedDistractor", "comment"),
+    ("InvalidatedDistractor", "justification"),
+    ("Justification", "justification"),
+    ("Question", "answer"),
+    ("Question", "stem"),
+    ("Quiz", "description"),
+}
+
+def _model_name(model):
+    return model if isinstance(model, str) else model.__name__
 
 def prepare_plain_text(value):
     """Return plain text for fields that must not store/render HTML."""
     return bleach.clean(value, tags=[], attributes={}, strip=True)
+
+def prepare_field_value(model, field, value):
+    """Prepare a submitted value according to the model field policy."""
+    if (_model_name(model), field) in RICH_HTML_FIELDS:
+        return sanitize(value)
+    return prepare_plain_text(value)
 
 @APP.template_filter('unescapeDoubleQuotes')
 def unescape_double_quotes(s): 
