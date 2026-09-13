@@ -96,10 +96,6 @@ class Question(DB.Model):
             "title" : self.title,
             "alternatives" : []
         }
-        # NOTE trying to skip the distractors, eventually we want just their IDs
-        # q['alternatives'] = [d.answer for d in self.distractors]
-        #q['alternatives'].append(self.answer)
-        #shuffle(q['alternatives'])
         return q
         
 
