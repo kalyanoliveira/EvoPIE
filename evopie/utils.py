@@ -21,12 +21,6 @@ def prepare_plain_text(value):
     """Return plain text for fields that must not store/render HTML."""
     return bleach.clean(value, tags=[], attributes={}, strip=True)
 
-# All TODO #3 issue from models.py are factored in the function below
-# unescaping so that the stem and answer are rendered in jinja2 template with | safe
-from jinja2 import Markup
-def unescape(str):
-    return Markup(str).unescape()
-            
 @APP.template_filter('unescapeDoubleQuotes')
 def unescape_double_quotes(s): 
     return s.replace('\\"','\"')
