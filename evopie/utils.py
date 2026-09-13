@@ -24,15 +24,11 @@ RICH_HTML_FIELDS = {
 def _model_name(model):
     return model if isinstance(model, str) else model.__name__
 
-def _prepare_plain_text(value):
-    """Return plain text for fields that must not store/render HTML."""
-    return bleach.clean(value, tags=[], attributes={}, strip=True)
-
 def prepare_field_value(model, field, value):
     """Prepare a submitted value according to the model field policy."""
     if (_model_name(model), field) in RICH_HTML_FIELDS:
         return sanitize(value)
-    return _prepare_plain_text(value)
+    return bleach.clean(value, tags=[], attributes={}, strip=True)
 
 def groupby(iterable, key=lambda x: x):
     '''from iterable creates list of pairs group_key:list of elements with the key.
