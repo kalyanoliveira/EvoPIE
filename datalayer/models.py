@@ -96,6 +96,8 @@ class Question(DB.Model):
             "title" : self.title,
             "alternatives" : []
         }
+        # This intentionally omits full answer/distractor alternatives. Routes
+        # that need rendered alternatives build them from the attempt state.
         return q
         
 
