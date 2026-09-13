@@ -1,10 +1,5 @@
 # pylint: disable=no-member
 # pylint: disable=E1101
-from . import APP
-#NOTE: before importing other modules, like models, think about dependencies. 
-#Assuming that this module should not have db specific functions but only utilities db context free 
-#use decorators or models to add functionality which is models specific
-
 # helper method to use instead of directly calling bleach.clean
 import bleach
 from bleach_allowlist import generally_xss_safe, print_attrs, standard_styles
