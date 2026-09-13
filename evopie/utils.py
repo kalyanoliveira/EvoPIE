@@ -39,10 +39,6 @@ def prepare_field_value(model, field, value):
         return sanitize(value)
     return prepare_plain_text(value)
 
-@APP.template_filter('unescapeDoubleQuotes')
-def unescape_double_quotes(s): 
-    return s.replace('\\"','\"')
-
 def groupby(iterable, key=lambda x: x):
     '''from iterable creates list of pairs group_key:list of elements with the key.
         Note that iterable.groupby groups only adjacent elements. This method is equiv of itertools.groupby(sorted)
