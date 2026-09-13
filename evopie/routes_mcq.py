@@ -10,7 +10,7 @@ from flask import flash
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from datalayer import QUIZ_ATTEMPT_SOLUTIONS, QUIZ_STEP1, QUIZ_STEP2, QUIZ_ATTEMPT_STEP1, QUIZ_ATTEMPT_STEP2, ROLE_INSTRUCTOR, ROLE_STUDENT
-from evopie.utils import groupby, prepare_plain_text, prepare_rich_html, sanitize
+from evopie.utils import groupby, prepare_field_value, sanitize
 from evopie.quiz_model import get_quiz_builder
 from evopie.decorators import role_required, unmime, validate_quiz_attempt_step, verify_deadline, verify_instructor_relationship, retry_concurrent_update
 
@@ -56,9 +56,9 @@ def post_new_question():
     if answer is None or stem is None or title is None:
         abort(400, "Unable to create new question due to missing data") # bad request
     
-    escaped_answer = prepare_rich_html(answer)
-    escaped_stem = prepare_rich_html(stem)
-    escaped_title = prepare_plain_text(title)
+    escaped_answer = prepare_field_value(models.Question, "answer", answer)
+    escaped_stem = prepare_field_value(models.Question, "stem", stem)
+    escaped_title = prepare_field_value(models.Question, "title", title)
 
     author_id = current_user.get_id()
 
@@ -126,9 +126,9 @@ def put_question(question_id):
         abort(400, "Unable to modify question due to missing data") # bad request
     
     q = models.Question.query.get_or_404(question_id)
-    q.title = prepare_plain_text(title)
-    q.stem = prepare_rich_html(stem)
-    q.answer = prepare_rich_html(answer)
+    q.title = prepare_field_value(models.Question, "title", title)
+    q.stem = prepare_field_value(models.Question, "stem", stem)
+    q.answer = prepare_field_value(models.Question, "answer", answer)
 
     models.DB.session.commit()
     if request.json:
@@ -208,8 +208,8 @@ def post_new_distractor_for_question(question_id):
     
     q = models.Question.query.get_or_404(question_id)
     
-    escaped_answer = prepare_rich_html(answer)
-    escaped_justification = prepare_rich_html(justification)
+    escaped_answer = prepare_field_value(models.Distractor, "answer", answer)
+    escaped_justification = prepare_field_value(models.Distractor, "justification", justification)
 
     new_distractor = models.Distractor(answer=escaped_answer,justification=escaped_justification,question_id=q.id)
     q.distractors.append(new_distractor)
@@ -240,8 +240,8 @@ def post_new_student_distractor_for_question(question_id):
     
     q = models.Question.query.get_or_404(question_id)
 
-    escaped_distractor = prepare_rich_html(distractor)
-    escaped_justification = prepare_rich_html(justification)
+    escaped_distractor = prepare_field_value(models.InvalidatedDistractor, "answer", distractor)
+    escaped_justification = prepare_field_value(models.InvalidatedDistractor, "justification", justification)
 
     new_student_distractor = models.InvalidatedDistractor(answer=escaped_distractor,justification=escaped_justification,question_id=q.id, author_id=current_user.get_id())
     q.invalidated_distractors.append(new_student_distractor)
@@ -268,7 +268,7 @@ def put_student_distractor_for_question(question_id):
 
     q = models.Question.query.get_or_404(question_id)
 
-    escaped_distractor = prepare_rich_html(distractor)
+    escaped_distractor = prepare_field_value(models.InvalidatedDistractor, "answer", distractor)
 
     # check if the student has already submitted a distractor for this question
     student_distractor = models.InvalidatedDistractor.query.filter_by(question_id=question_id, author_id=current_user.get_id()).first()
@@ -300,7 +300,7 @@ def put_student_justification_for_question(question_id):
 
     q = models.Question.query.get_or_404(question_id)
 
-    escaped_justification = prepare_rich_html(justification)
+    escaped_justification = prepare_field_value(models.InvalidatedDistractor, "justification", justification)
 
     # check if the student has submitted a distractor for this question
     student_distractor = models.InvalidatedDistractor.query.filter_by(question_id=question_id, author_id=current_user.get_id()).first()
@@ -398,7 +398,7 @@ def put_student_comment_for_distractor(distractor_id):
 
     student_distractor = models.InvalidatedDistractor.query.get_or_404(distractor_id)
 
-    escaped_comment = prepare_rich_html(comment)
+    escaped_comment = prepare_field_value(models.InvalidatedDistractor, "comment", comment)
 
     if student_distractor.comment is not None:
         student_distractor.comment = escaped_comment
@@ -444,8 +444,8 @@ def put_distractor(distractor_id):
         abort(400, "Unable to modify distractor due to missing data") # bad request
 
     d = models.Distractor.query.get_or_404(distractor_id)
-    d.answer = prepare_rich_html(answer)
-    d.justification = prepare_rich_html(justification)
+    d.answer = prepare_field_value(models.Distractor, "answer", answer)
+    d.justification = prepare_field_value(models.Distractor, "justification", justification)
 
     models.DB.session.commit()
 
@@ -633,9 +633,9 @@ def post_new_course():
     if request.json['name'] is None or request.json['description'] is None or request.json['title'] is None:
         abort(400, "Unable to create course due to missing data")
 
-    name = prepare_plain_text(request.json['name'])
-    description = prepare_rich_html(request.json['description'])
-    title = prepare_plain_text(request.json['title'])
+    name = prepare_field_value(models.Course, "name", request.json['name'])
+    description = prepare_field_value(models.Course, "description", request.json['description'])
+    title = prepare_field_value(models.Course, "title", request.json['title'])
 
     c = models.Course(name=name, description=description, title=title, instructor_id=current_user.get_id())
 
@@ -659,9 +659,9 @@ def put_course(course_id):
     if request.json['name'] is None or request.json['description'] is None or request.json['title'] is None:
         abort(400, "Unable to modify course due to missing data")
 
-    name = prepare_plain_text(request.json['name'])
-    description = prepare_rich_html(request.json['description'])
-    title = prepare_plain_text(request.json['title'])
+    name = prepare_field_value(models.Course, "name", request.json['name'])
+    description = prepare_field_value(models.Course, "description", request.json['description'])
+    title = prepare_field_value(models.Course, "title", request.json['title'])
 
     course.name = name
     course.description = description
@@ -688,8 +688,8 @@ def post_new_quiz():
     #if request.json['questions_ids'] is None:
     #    abort(400, "Unable to create new quiz due to missing data") # bad request
     
-    bleached_title = prepare_plain_text(title)
-    bleached_description = prepare_rich_html(description)
+    bleached_title = prepare_field_value(models.Quiz, "title", title)
+    bleached_description = prepare_field_value(models.Quiz, "description", description)
 
     q = models.Quiz(title=bleached_title, description=bleached_description, author_id=current_user.get_id(), status="HIDDEN")
     
@@ -777,8 +777,8 @@ def put_quizzes(qid):
         #  or request.json['questions_ids'] is None:
         abort(400, "Unable to modify quiz due to missing data") # bad request
 
-    quiz.title = prepare_plain_text(request.json['title'])
-    quiz.description = prepare_rich_html(request.json['description'])
+    quiz.title = prepare_field_value(models.Quiz, "title", request.json['title'])
+    quiz.description = prepare_field_value(models.Quiz, "description", request.json['description'])
 
     # if no questions_ids are passed, we just update the above title and description
     # please note that we may receive an empty list of questions_ids thus meaning we removed all questions
@@ -982,7 +982,7 @@ def all_quizzes_take(qid):
             for key_quest in justifications_dict:
                 quest = justifications_dict[key_quest]
                 for key_just in quest:
-                    just = models.Justification(quiz_question_id=key_quest, distractor_id=key_just, student_id=sid, justification=prepare_rich_html(quest[key_just]), seen=0)
+                    just = models.Justification(quiz_question_id=key_quest, distractor_id=key_just, student_id=sid, justification=prepare_field_value(models.Justification, "justification", quest[key_just]), seen=0)
                     models.DB.session.add(just)
             models.DB.session.add(attempt)
             models.DB.session.commit()
