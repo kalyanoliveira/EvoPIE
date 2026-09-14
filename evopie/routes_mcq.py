@@ -10,7 +10,7 @@ from flask import flash
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from datalayer import QUIZ_ATTEMPT_SOLUTIONS, QUIZ_STEP1, QUIZ_STEP2, QUIZ_ATTEMPT_STEP1, QUIZ_ATTEMPT_STEP2, ROLE_INSTRUCTOR, ROLE_STUDENT
-from evopie.utils import groupby, prepare_field_value, sanitize
+from evopie.utils import groupby, prepare_field_value
 from evopie.quiz_model import get_quiz_builder
 from evopie.decorators import role_required, unmime, validate_quiz_attempt_step, verify_deadline, verify_instructor_relationship, retry_concurrent_update
 
@@ -817,7 +817,7 @@ def post_quizzes_status(quiz):
     ''' Modifies the status of given quiz '''
     if not request.is_json:
         abort(406, "JSON format required for request") # not acceptable
-    new_status = sanitize(request.json['status'])
+    new_status = prepare_field_value(models.Quiz, "status", request.json['status'])
     # FIXED how about check that the status is actually valid, eh? :)'
     # done in set_status below
     old_status = quiz.status
@@ -848,7 +848,7 @@ def post_quizzes_deadline_driven(qid):
     if not request.is_json:
         abort(406, "JSON format required for request")
     
-    new_deadline_driven = sanitize(request.json['deadline_driven'])
+    new_deadline_driven = prepare_field_value(models.Quiz, "deadline_driven", request.json['deadline_driven'])
 
     if new_deadline_driven == "True" or new_deadline_driven == "False":
         quiz.deadline_driven = new_deadline_driven
@@ -1231,7 +1231,7 @@ def post_users_role(uid):
 
     if not request.json:
         abort(406, "JSON format required for request") # not acceptable
-    new_role = sanitize(request.json['role'])
+    new_role = prepare_field_value(models.User, "role", request.json['role'])
     if(user.set_role(new_role)):
         response     = ({ "message" : "OK" }, 200, {"Content-Type": "application/json"})
         models.DB.session.commit()

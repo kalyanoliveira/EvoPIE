@@ -4,10 +4,6 @@
 import bleach
 from bleach_allowlist import generally_xss_safe, print_attrs, standard_styles
 
-def sanitize(html):
-    result = bleach.clean(html, tags=generally_xss_safe, attributes=print_attrs, styles=standard_styles)
-    return result
-
 RICH_HTML_FIELDS = {
     ("Course", "description"),
     ("Distractor", "answer"),
@@ -27,7 +23,12 @@ def _model_name(model):
 def prepare_field_value(model, field, value):
     """Prepare a submitted value according to the model field policy."""
     if (_model_name(model), field) in RICH_HTML_FIELDS:
-        return sanitize(value)
+        return bleach.clean(
+            value,
+            tags=generally_xss_safe,
+            attributes=print_attrs,
+            styles=standard_styles,
+        )
     return bleach.clean(value, tags=[], attributes={}, strip=True)
 
 def groupby(iterable, key=lambda x: x):
