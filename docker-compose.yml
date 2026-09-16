@@ -2,7 +2,10 @@ x-web-environment: &web-environment
   - EVOPIE_DATABASE_URI=${EVOPIE_DATABASE_URI:-sqlite:////app/data/db.sqlite}
 
 x-updater-common: &updater-common
-  build: ./analysislayer
+  build:
+    context: ./analysislayer
+    args:
+      EVOPIE_GIT_REF: ${EVOPIE_GIT_REF:-master}
   environment:
     - EVOPIE_DATABASE_URI=${EVOPIE_DATABASE_URI:-sqlite:////app/data/db.sqlite}
     - INIT_DB=1
@@ -13,7 +16,10 @@ x-updater-common: &updater-common
   restart: always
 
 x-web-common: &web-common
-  build: ./evopie
+  build:
+    context: ./evopie
+    args:
+      EVOPIE_GIT_REF: ${EVOPIE_GIT_REF:-master}
   environment: *web-environment
   expose:
     - 5000
