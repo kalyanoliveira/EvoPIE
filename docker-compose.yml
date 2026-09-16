@@ -30,6 +30,9 @@ x-nginx-common: &nginx-common
 services:
   updater-local:
     <<: *updater-common
+    build:
+      context: .
+      dockerfile: analysislayer/Dockerfile.local
     profiles:
       - local
     volumes:
@@ -37,6 +40,9 @@ services:
 
   web-local:
     <<: *web-common
+    build:
+      context: .
+      dockerfile: evopie/Dockerfile.local
     profiles:
       - local
     ports:
