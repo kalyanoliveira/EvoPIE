@@ -108,6 +108,19 @@ EVOPIE_CERTS_DIR=/etc/letsencrypt \
 docker compose --profile production up --build -d
 ```
 
+Production builds clone the upstream EvoPIE repository in the application
+Dockerfiles. They use `master` by default. To deploy a specific branch, tag, or
+commit, set `EVOPIE_GIT_REF` when building:
+
+```bash
+EVOPIE_DATA_DIR=/srv/evopie/data \
+EVOPIE_SERVER_NAME=example.edu \
+EVOPIE_CERT_DOMAIN=example.edu \
+EVOPIE_CERTS_DIR=/etc/letsencrypt \
+EVOPIE_GIT_REF=v1.2.3 \
+docker compose --profile production up --build -d
+```
+
 This exposes the following host files to nginx:
 
 ```text
@@ -136,6 +149,8 @@ The nginx entrypoint also fails if the certificate or key file is missing.
   `EVOPIE_SERVER_NAME` when HTTPS is enabled.
 - `EVOPIE_CERTS_DIR`: host directory mounted to `/etc/nginx/certs`. Required
   for production.
+- `EVOPIE_GIT_REF`: branch, tag, or commit used by production application
+  builds. Defaults to `master`.
 
 Advanced deployments can set full certificate paths inside the nginx container:
 

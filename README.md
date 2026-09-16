@@ -35,12 +35,15 @@ The local profile builds from your current checkout and stores EvoPIE data in
 before starting the services.
 
 For production HTTPS, provide the required deployment settings. Production
-builds fetch the upstream repository in the application Dockerfiles.
+builds fetch the upstream repository in the application Dockerfiles and use
+`master` by default. To deploy a different branch, tag, or commit, set
+`EVOPIE_GIT_REF`.
 
 ```bash
 EVOPIE_DATA_DIR=/srv/evopie/data \
 EVOPIE_SERVER_NAME=example.edu \
 EVOPIE_CERTS_DIR=/etc/letsencrypt \
+EVOPIE_GIT_REF=master \
 docker compose --profile production up --build -d
 ```
 
