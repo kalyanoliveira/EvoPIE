@@ -6,7 +6,8 @@ accepts the browser connection on port 5000.
 
 Docker Compose uses profiles so deployment intent is explicit:
 
-- `local`: direct HTTP startup without nginx or certificates.
+- `local`: direct HTTP startup from the current checkout without nginx or
+  certificates.
 - `production`: nginx HTTPS startup with required data, domain, and certs.
 
 ## Why certificates are required for HTTPS
@@ -36,9 +37,10 @@ Then open:
 http://127.0.0.1:5000
 ```
 
-This mode is intended for local development and smoke testing. It publishes the
-web container directly and avoids nginx/certificate setup before confirming
-that the application starts.
+This mode is intended for local development and smoke testing. It builds the
+application image from the current checkout, publishes the web container
+directly, and avoids nginx/certificate setup before confirming that the
+application starts.
 
 The local profile stores EvoPIE data in `./data` by default. Set
 `EVOPIE_DATA_DIR` to use a different host directory.

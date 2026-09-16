@@ -30,10 +30,12 @@ startup without nginx or TLS, run:
 docker compose --profile local up --build -d
 ```
 
-The local profile stores EvoPIE data in `./data` by default. To use a different
-host directory, set `EVOPIE_DATA_DIR` before starting the services.
+The local profile builds from your current checkout and stores EvoPIE data in
+`./data` by default. To use a different host directory, set `EVOPIE_DATA_DIR`
+before starting the services.
 
-For production HTTPS, provide the required deployment settings:
+For production HTTPS, provide the required deployment settings. Production
+builds fetch the upstream repository in the application Dockerfiles.
 
 ```bash
 EVOPIE_DATA_DIR=/srv/evopie/data \
