@@ -31,12 +31,36 @@ docker compose --profile local up --build -d
 ```
 
 The local profile builds from your current checkout and stores EvoPIE data in
-`./data` by default. To use a different host directory, set `EVOPIE_DATA_DIR`
-before starting the services.
+`./data` by default. To store database and uploaded data elsewhere, set
+`EVOPIE_DATA_DIR` before starting the services.
 
-For production HTTPS, provide the required deployment settings. Production
-builds fetch the upstream repository in the application Dockerfiles and use
-`master` by default. To deploy a different branch, tag, or commit, set
+For active local development, Compose Watch is also available. It syncs source
+changes into the running containers and restarts the affected service. This
+requires a recent Docker Compose version with watch support:
+
+```bash
+docker compose --profile local up --build --watch
+```
+
+The watch configuration should ignore the same generated and local-only paths
+listed in `.dockerignore`. You can check that manually with:
+
+```bash
+./scripts/check-compose-watch-ignore.py
+```
+
+The preferred convenience command runs that check before starting watch mode:
+
+```bash
+just local-watch
+```
+
+Compose Watch runs attached to the terminal. Docker Compose does not allow
+combining `--watch` with detached mode.
+
+For production HTTPS deployment, provide the required deployment settings.
+Production builds fetch the upstream repository in the application Dockerfiles
+and use `master` by default. To deploy a different branch, tag, or commit, set
 `EVOPIE_GIT_REF`.
 
 ```bash

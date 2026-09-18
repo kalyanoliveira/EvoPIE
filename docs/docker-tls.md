@@ -43,7 +43,34 @@ directly, and avoids nginx/certificate setup before confirming that the
 application starts.
 
 The local profile stores EvoPIE data in `./data` by default. Set
-`EVOPIE_DATA_DIR` to use a different host directory.
+`EVOPIE_DATA_DIR` to store database and uploaded data somewhere else.
+
+For active development, Compose Watch is also available. It syncs source
+changes into the local containers and restarts the affected service instead of
+requiring a rebuild after each source change. This requires a recent Docker
+Compose version with watch support:
+
+```bash
+docker compose --profile local up --build --watch
+```
+
+The watch configuration should ignore the same generated and local-only paths
+listed in `.dockerignore`. You can check that manually with:
+
+```bash
+./scripts/check-compose-watch-ignore.py
+```
+
+The preferred convenience command runs that check before starting watch mode:
+
+```bash
+just local-watch
+```
+
+Compose Watch runs attached to the terminal. Docker Compose does not allow
+combining `--watch` with detached mode.
+
+Dependency or Dockerfile changes still rebuild the local images.
 
 ## Local self-signed HTTPS certificate
 
