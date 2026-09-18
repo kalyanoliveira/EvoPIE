@@ -33,6 +33,24 @@ x-nginx-common: &nginx-common
     - "5000:5000"
   restart: always
 
+x-local-watch-ignore: &local-watch-ignore
+  - .git/
+  - __pycache__/
+  - '*.pyc'
+  - venv/
+  - .vscode/
+  - .DS_Store
+  - data/
+  - certs/
+  - results/
+  - algo/
+  - figures/
+  - db.log
+  - Pipfile
+  - Pipfile.lock
+  - evopie/Dockerfile.local
+  - analysislayer/Dockerfile.local
+
 services:
   updater-local:
     <<: *updater-common
@@ -43,6 +61,18 @@ services:
       - local
     volumes:
       - ${EVOPIE_DATA_DIR:-./data}:/app/data
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app
+          ignore: *local-watch-ignore
+        - action: rebuild
+          path: Pipfile
+        - action: rebuild
+          path: Pipfile.lock
+        - action: rebuild
+          path: analysislayer/Dockerfile.local
 
   web-local:
     <<: *web-common
@@ -55,6 +85,18 @@ services:
       - "5000:5000"
     volumes:
       - ${EVOPIE_DATA_DIR:-./data}:/app/data
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app
+          ignore: *local-watch-ignore
+        - action: rebuild
+          path: Pipfile
+        - action: rebuild
+          path: Pipfile.lock
+        - action: rebuild
+          path: evopie/Dockerfile.local
     depends_on:
       - updater-local
 
