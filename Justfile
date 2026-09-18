@@ -4,6 +4,13 @@ default:
 local-up:
     docker compose --profile local up --build -d
 
+local-watch:
+    just check-watch-ignore
+    docker compose --profile local up --build --watch
+
+check-watch-ignore:
+    ./scripts/check-compose-watch-ignore.py
+
 prod-up domain certs_dir data_dir git_ref="master":
     EVOPIE_SERVER_NAME="{{domain}}" \
     EVOPIE_CERT_DOMAIN="{{domain}}" \
