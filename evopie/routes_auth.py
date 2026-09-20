@@ -69,9 +69,9 @@ def post_signup():
     first_name = prepare_field_value(models.User, "first_name", first_name)
     last_name = prepare_field_value(models.User, "last_name", last_name)
 
-    #FIXME for now, we hardcode that the 1st user to signup is an INSTRUCTOR
-    # the testing scripts are hardwired to work with that assumption too. 
-    # Need to fix this as soon as we bootstrap an ADMIN user and allow them 
+    # FIXME for now, we hardcode that the 1st user to signup is an INSTRUCTOR.
+    # Current CLI tests still rely on that historical bootstrap assumption.
+    # Need to fix this as soon as we bootstrap an ADMIN user and allow them
     # to promote a user to a different role; e.g., promote_to_instructor()
     if models.User.query.all():
         # there is at least one user so this one is going to be a STUDENT

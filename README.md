@@ -22,7 +22,6 @@ docs       | maintained documentation and preserved legacy notes
 evopie     | main Flask application, templates, and static assets
 nginx      | production reverse proxy container configuration
 scripts    | development and deployment helper scripts
-testing    | legacy shell-based testing workflows
 tests      | Python test suite and fixtures
 
 ## How to build / deploy the server
