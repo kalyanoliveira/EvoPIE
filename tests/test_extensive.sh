@@ -19,7 +19,7 @@ flask student knows -kr -ef 'student{}@usf.edu' -k '{"sid":{"range":[1,4]},"qid"
     -k '{"sid":{"range":[1,14]},"qid":1,"did":4,"step":2,"metrics":{"chance":1}}' \
     -k '{"sid":{"ranges":[[1,7],10]},"qid":4,"did":13,"step":2,"metrics":{"chance":1}}' \
     -k '{"sid":{"range":[1,14]},"qid":5,"did":17,"step":2,"metrics":{"chance":1}}' \
-    -o testing/students.csv
+    -o tests/students.csv
 
 flask quiz run -q 1 -s STEP1 -s STEP2 --no-algo -kns KNOWLEDGE_SELECTION_CHANCE --justify-response -ef 'student{}@usf.edu' \
     -l '{"sid":1,"jid":{"range":[90,103]}}' \

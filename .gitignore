@@ -8,14 +8,10 @@ gradebooks.diff
 gradebook-downloaded.csv
 .DS_Store
 evopie/evo.md
-testing/diff-o.csv
-testing/students.csv
+tests/students.csv
 deca-spaces/*
 results/*
 algo/*
-testing/archive.csv
-testing/deca.json
-testing/evo.json
 data
 certs
 figures
