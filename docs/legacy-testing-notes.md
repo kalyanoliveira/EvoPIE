@@ -94,6 +94,31 @@ policy.
 The old shell tests downloaded `/quiz/1/grades?q=csv` while logged in as the
 instructor, then compared the CSV against a checked-in verified gradebook.
 
+The final `testing/` audit found two gradebook fixture families:
+
+- an easy-labels flow with 10 students, 3 questions, simple labels, and an old
+  CSV containing initial score, revised score, likes given, and likes received;
+- an extensive flow with 20 students, 5 questions, several quartile/weight
+  configurations, and old CSVs using a superseded gradebook column layout.
+
+The extensive scenario is now covered by `tests/test_extensive.py` and the
+fixtures in `tests/`, which use the current gradebook columns and course-aware
+CLI flow. The old `testing/Extensive Test` CSVs are retained only as historical
+shape information in this note.
+
 Future tests should prefer Python test code or Flask CLI helpers over shell
 curl flows, but the invariant remains valuable: deterministic student answers,
 likes, and grading weights should produce a reproducible gradebook CSV.
+
+## Multiple-instructor notes
+
+The old `testing/MultiInstr` setup created two instructors and seven students,
+then kept two plain email lists:
+
+- `test1.csv`: students 1, 3, 5, 7, and 13;
+- `test2.csv`: students 5, 7, 13, 15, and 17.
+
+The reusable idea is to verify course membership and instructor isolation with
+overlapping student rosters. New tests should create explicit courses for each
+instructor, attach overlapping but not identical student sets, and assert that
+instructors only see and grade students from their own courses.
