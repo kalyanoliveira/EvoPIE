@@ -128,6 +128,23 @@ flask quiz post-process \
 `flask quiz plot-metric-vs-num-of-dims` was used to create figures across
 folders of experiment results.
 
+## Retired VS Code launch configs
+
+The removed `.vscode/launch.json` file was a personal command scratchpad for
+running Flask CLI commands from VS Code. It was not a maintained project API.
+The reusable commands it captured belonged to these families:
+
+- local Flask startup with `FLASK_APP=app.py` and `FLASK_DEBUG=1`;
+- `flask DB-init`, `flask quiz init`, and `flask student init`;
+- `flask quiz run`, `flask quiz result`, and `flask quiz export`;
+- `flask deca init`, `flask deca init-many`, and `flask deca result`;
+- `flask quiz deca-experiment` and `flask quiz deca-experiments`;
+- DECA result plotting, ranks, distributions, and t-test helpers.
+
+The file also contained hardcoded generated paths such as `data/rq*`, `algo/`,
+`deca-spaces/`, `results/`, and `figures/`. Treat those as examples of
+historical local experiment layouts, not as required repository directories.
+
 ## SLURM adaptation
 
 The removed `slurm/` scripts ran the same CLI workflow as array jobs on an HPC
