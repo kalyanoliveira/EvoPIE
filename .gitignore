@@ -21,3 +21,7 @@ certs
 figures
 db.log
 .vscode/.ropeproject/
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.db
