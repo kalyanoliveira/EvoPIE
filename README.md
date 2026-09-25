@@ -1,14 +1,21 @@
 # EvoPIE - Evolutionary Peer Instruction Environment
 
 ## Synopsis
-This web application supports asynchronous peer instruction.
-Server side is currently handled by Python/Flask app and also exposes a RESTful API for future development toward single page web app format.
 
+This web application supports asynchronous peer instruction.
+
+Server side is currently handled by Python/Flask app and also exposes a RESTful
+API for future development toward single page web app format.
 
 ## Acknowledgement
-This material is based in part upon work supported by the National Science Foundation under awards #2012967. Any opinions, findings, and conclusions or recommendation expressed in this work are those of the authors and do not necessarily reflect the views of the National Science Foundation.
+
+This material is based in part upon work supported by the National Science
+Foundation under awards #2012967. Any opinions, findings, and conclusions or
+recommendation expressed in this work are those of the authors and do not
+necessarily reflect the views of the National Science Foundation.
 
 ## Repository structure:
+
 Folder | Description
 ------ | -----------
 deployment  |   archive of scripts and Dockerfiles from previous field tests
@@ -18,13 +25,19 @@ nginx       |   Dockerfiles for nginx container
 testing     |   mix of scripts and other tools used to test the system
 
 ## How to build / deploy the server
-Check out the main branch of our GitHub repository: 
+
+Check out the main branch of our GitHub repository:
+
 ```bash
 git clone https://github.com/cereal-lab/EvoPIE.git
 ```
 
-Docker Compose uses profiles so deployment intent is explicit. For local
-startup without nginx or TLS, run:
+We have created Docker Compose profiles so that you can choose whether you want
+to deploy the application to some server, wheter you want to test its building
+locally, or do iterative development locally (local HTTPS testing is also
+possible).
+
+For local startup without nginx or TLS (i.e. without HTTPS), run:
 
 ```bash
 docker compose --profile local up --build -d
@@ -43,13 +56,15 @@ docker compose --profile local up --build --watch
 ```
 
 The watch configuration should ignore the same generated and local-only paths
-listed in `.dockerignore`. You can check that manually with:
+listed in `.dockerignore` files. You can check that manually with:
 
 ```bash
 ./scripts/check-compose-watch-ignore.py
 ```
 
-The preferred convenience command runs that check before starting watch mode:
+This project does have a Justfile for quickly running these kind of commands,
+and the watched-local mode of development does have a convenience command for
+running that script beforehand too:
 
 ```bash
 just local-watch
@@ -78,5 +93,6 @@ See [Docker TLS certificate setup](docs/docker-tls.md) for local HTTP,
 the local certificate helper, and production certificate notes.
 
 Build the docker containers and run them with one of the profiles above.
-(Note the space since docker-compose is now deprecated and replaced by the command compose in docker)
 
+(Note the space since docker-compose is now deprecated and replaced by the
+command compose in docker)
