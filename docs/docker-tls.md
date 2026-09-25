@@ -10,19 +10,6 @@ Docker Compose uses profiles so deployment intent is explicit:
   certificates.
 - `production`: nginx HTTPS startup with required data, domain, and certs.
 
-## Why certificates are required for HTTPS
-
-A TLS certificate lets a browser verify a server name and negotiate encrypted
-traffic. A typical nginx setup needs two files:
-
-- `fullchain.pem`: the public certificate chain sent to browsers.
-- `privkey.pem`: the private key proving the server owns that certificate.
-
-For production, these files normally come from a trusted certificate authority,
-such as Let's Encrypt. For local testing, they can be self-signed. A
-self-signed certificate is enough to start nginx and encrypt traffic, but
-browsers will show a warning because they do not trust it automatically.
-
 ## Local HTTP mode
 
 For local HTTP, select the local Compose profile:
