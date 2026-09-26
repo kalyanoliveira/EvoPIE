@@ -1,11 +1,14 @@
 # EvoPIE - Evolutionary Peer Instruction Environment
 
-## Synopsis
+## What is EvoPIE?
 
-This web application supports asynchronous peer instruction.
-
-Server side is currently handled by Python/Flask app and also exposes a RESTful
-API for future development toward single page web app format.
+EvoPIE is a web application for asynchronous peer instruction that helps
+instructors run staged multiple-choice quiz activities. Students first answer
+questions and justify why alternative answers are incorrect, then review peer
+justifications, revise their answers, and optionally propose new distractors.
+EvoPIE records these interactions so instructors can grade participation,
+analyze student performance, and use data-driven quiz models to surface
+misconceptions for future instruction.
 
 ## Acknowledgement
 
