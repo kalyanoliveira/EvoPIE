@@ -61,8 +61,8 @@
    http://127.0.0.1:5000
    ```
 
-On an empty database, the first account created through the sign-up page becomes
-an instructor account. Later accounts become student accounts.
+On an empty database, the first account created through the sign-up page
+becomes an instructor account. Later accounts become student accounts.
 
 ## Deploy with Docker Compose
 
