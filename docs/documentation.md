@@ -20,9 +20,10 @@ This document explains where EvoPIE documentation belongs.
 ## Updating documentation
 
 When a change alters how EvoPIE works, how it is run, how it is used, or how it
-is troubleshot, update the relevant documentation in the same change.
+is troubleshot, update the relevant documentation in the same change, and
+_only_ the relevant documentation/segments.
 
 Prefer updating an existing document over creating a new one. Create a new
 document only when the information has a clearly different purpose from the
-existing documents.
-
+existing documents, and make sure to include it and its description in the
+documentation map, and perhaps in the root-level README too if appropriate.
