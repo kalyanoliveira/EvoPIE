@@ -1,14 +1,21 @@
 # EvoPIE - Evolutionary Peer Instruction Environment
 
 ## Synopsis
-This web application supports asynchronous peer instruction.
-Server side is currently handled by Python/Flask app and also exposes a RESTful API for future development toward single page web app format.
 
+This web application supports asynchronous peer instruction.
+
+Server side is currently handled by Python/Flask app and also exposes a RESTful
+API for future development toward single page web app format.
 
 ## Acknowledgement
-This material is based in part upon work supported by the National Science Foundation under awards #2012967. Any opinions, findings, and conclusions or recommendation expressed in this work are those of the authors and do not necessarily reflect the views of the National Science Foundation.
+
+This material is based in part upon work supported by the National Science
+Foundation under awards #2012967. Any opinions, findings, and conclusions or
+recommendation expressed in this work are those of the authors and do not
+necessarily reflect the views of the National Science Foundation.
 
 ## Repository structure:
+
 Folder | Description
 ------ | -----------
 deployment  |   archive of scripts and Dockerfiles from previous field tests
