@@ -104,6 +104,9 @@ The expected certificate files are:
 
 3. Make sure the TLS certificate files exist.
 
+   Provision the certificate with certbot or another TLS certificate provider
+   before starting Docker Compose.
+
 4. Start the services.
 
    ```bash
