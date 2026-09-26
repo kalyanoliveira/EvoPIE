@@ -17,7 +17,13 @@
    pipenv sync
    ```
 
-4. Initialize the local database.
+4. Set the Flask app entry point.
+
+   ```bash
+   export FLASK_APP=evopie/__init__.py
+   ```
+
+5. Initialize the local database.
 
    ```bash
    pipenv run flask DB-init
@@ -30,7 +36,7 @@
    pipenv run flask DB-reboot
    ```
 
-5. Run the updater.
+6. Run the updater.
 
    ```bash
    pipenv run python updater.py -1
@@ -43,13 +49,13 @@
    pipenv run python updater.py 360
    ```
 
-6. Start the web application.
+7. Start the web application.
 
    ```bash
    pipenv run flask run
    ```
 
-7. Open EvoPIE in your browser.
+8. Open EvoPIE in your browser.
 
    ```text
    http://127.0.0.1:5000
