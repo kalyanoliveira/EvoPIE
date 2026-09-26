@@ -17,16 +17,21 @@ Foundation under awards #2012967. Any opinions, findings, and conclusions or
 recommendation expressed in this work are those of the authors and do not
 necessarily reflect the views of the National Science Foundation.
 
-## Repository structure:
+## Documentation
 
-Folder | Description
------- | -----------
-deployment  |   archive of scripts and Dockerfiles from previous field tests
-docs        |   you will never guess
-evopie      |   main application
-nginx       |   Dockerfiles for nginx container
-testing     |   mix of scripts and other tools used to test the system
+The main EvoPIE documentation is organized by purpose:
 
-## How to run
-
-Please read ./docs/how-to-run.md:
+- [How to run EvoPIE](docs/how-to-run.md): local setup and deployment steps.
+- [Architecture](docs/architecture.md): system design, application workflow,
+  data flow, roles, quiz lifecycle, background processing, and deployment
+  shape.
+- [User guide](docs/user-guide.md): how instructors, students, and admins use
+  EvoPIE through the web interface.
+- [Reference](docs/reference.md): exact names, statuses, commands, environment
+  variables, paths, and other factual details.
+- [Troubleshooting](docs/troubleshooting.md): FAQ-style fixes for common
+  problems.
+- [Decision records](docs/decisions/): short records explaining important
+  project and documentation decisions.
+- [Documentation guide](docs/documentation.md): where documentation belongs and
+  when it should be updated.
