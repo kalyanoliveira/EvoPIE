@@ -95,6 +95,9 @@ At a high level, quiz models exist so EvoPIE can use student responses and
 justifications as data. That data can help expose misconceptions and guide how
 future quiz content is selected or analyzed.
 
+The current model choices include manual selection, random selection, Parallel
+Pareto Hill Climbing, and sampling strategies based on interaction features.
+
 ## Justifications and peer instruction
 
 Justifications are central to EvoPIE. In Step 1, students explain why
@@ -104,6 +107,12 @@ selected peer justifications while revising their answers.
 EvoPIE stores these justifications and tracks which justifications were shown
 to which student. Students can like useful justifications. Those likes
 contribute to participation and justification-related grading.
+
+The Step 2 justification selection policy has two goals. It should give each
+student a fair chance for their justifications to be seen, and it should show
+students some justifications that are likely to be useful. The current design
+combines least-seen selection for fairness with quality-oriented selection for
+some remaining slots.
 
 ## Grading and analytics
 
