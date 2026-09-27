@@ -168,45 +168,66 @@ The component weights are quiz parameters that instructors can configure.
 
 ## Participation grade
 
-For a quiz, let `J` be the total number of justifications shown to a student in
-Step 2. The maximum number of likes available to give is `J`.
+For a quiz with $Q$ questions, let $A_q$ be the number of alternatives for
+question $q$. The total number of alternatives is:
 
-The limiting factor, `LF`, is an instructor-configured percentage representing
+$$
+A = \sum_{q \in Q} A_q
+$$
+
+During Step 2, each alternative $a$ is shown with $J_a$ justifications. The
+maximum number of likes available to give is:
+
+$$
+J = \sum_{a \in A} J_a
+$$
+
+The limiting factor $LF$ is an instructor-configured percentage representing
 how many likes a student should give to receive full participation credit.
 
 The participation threshold is:
 
-```text
-PT = LF * J
-```
+$$
+PT = LF \cdot J
+$$
 
 A student receives full participation credit when the number of likes they give
 falls in this range:
 
-```text
-round(PT * 0.8) <= likes_given <= PT
-```
+$$
+\operatorname{round}(0.8 \cdot PT) \leq \operatorname{likes\_given} \leq PT
+$$
 
 ## Justification grade
 
-For each student `s`, EvoPIE computes a justification score from likes received
+For each student $s$, EvoPIE computes a justification score from likes received
 from other students.
 
-For each other student `k`:
+For each other student $k$:
 
-- `Likes(k, s)` is the number of likes that `k` gave to `s`.
-- `Likes(k)` is the total number of likes that `k` gave in the quiz.
-- `PT` is the participation threshold.
+- $\operatorname{Likes}(k, s)$ is the number of likes that $k$ gave to $s$.
+- $\operatorname{Likes}(k)$ is the total number of likes that $k$ gave in the
+  quiz.
+- $PT$ is the participation threshold.
 
-The contribution from `k` is:
+The contribution from $k$ is:
 
-```text
-Likes(k, s) * min(PT / Likes(k), 1)
-```
+$$
+\operatorname{Likes}(k, s) \cdot
+\min\left(\frac{PT}{\operatorname{Likes}(k)}, 1\right)
+$$
 
-The student's justification score is the sum of those contributions across all
-other students. EvoPIE then assigns the justification grade by comparing that
-score to peer scores and placing it in a configured quartile.
+The student's justification score is:
+
+$$
+\operatorname{score}(s) =
+\sum_{k \in S,\ k \neq s}
+\operatorname{Likes}(k, s) \cdot
+\min\left(\frac{PT}{\operatorname{Likes}(k)}, 1\right)
+$$
+
+EvoPIE then assigns the justification grade by comparing that score to peer
+scores and placing it in a configured quartile.
 
 ## Justification dispatching
 
