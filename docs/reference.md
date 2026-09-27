@@ -195,7 +195,7 @@ A student receives full participation credit when the number of likes they give
 falls in this range:
 
 $$
-\operatorname{round}(0.8 \cdot PT) \leq \operatorname{likes\_given} \leq PT
+\mathrm{round}(0.8 \cdot PT) \leq \mathrm{likes\_given} \leq PT
 $$
 
 ## Justification grade
@@ -205,25 +205,24 @@ from other students.
 
 For each other student $k$:
 
-- $\operatorname{Likes}(k, s)$ is the number of likes that $k$ gave to $s$.
-- $\operatorname{Likes}(k)$ is the total number of likes that $k$ gave in the
-  quiz.
+- $\mathrm{Likes}(k, s)$ is the number of likes that $k$ gave to $s$.
+- $\mathrm{Likes}(k)$ is the total number of likes that $k$ gave in the quiz.
 - $PT$ is the participation threshold.
 
 The contribution from $k$ is:
 
 $$
-\operatorname{Likes}(k, s) \cdot
-\min\left(\frac{PT}{\operatorname{Likes}(k)}, 1\right)
+\mathrm{Likes}(k, s) \cdot
+\min\left(\frac{PT}{\mathrm{Likes}(k)}, 1\right)
 $$
 
 The student's justification score is:
 
 $$
-\operatorname{score}(s) =
+\mathrm{score}(s) =
 \sum_{k \in S,\ k \neq s}
-\operatorname{Likes}(k, s) \cdot
-\min\left(\frac{PT}{\operatorname{Likes}(k)}, 1\right)
+\mathrm{Likes}(k, s) \cdot
+\min\left(\frac{PT}{\mathrm{Likes}(k)}, 1\right)
 $$
 
 EvoPIE then assigns the justification grade by comparing that score to peer
