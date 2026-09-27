@@ -12,14 +12,6 @@ export FLASK_APP=evopie/__init__.py
 
 Then rerun the command.
 
-## Why does local setup fail with the wrong Python version?
-
-EvoPIE expects Python 3.8. Install Python 3.8 and rerun:
-
-```bash
-pipenv sync
-```
-
 ## Why is the local database empty?
 
 Initialize the database tables:
