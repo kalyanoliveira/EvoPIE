@@ -19,19 +19,11 @@ necessarily reflect the views of the National Science Foundation.
 
 ## Documentation
 
-The main EvoPIE documentation is organized by purpose:
+EvoPIE's documentation is done via Markdown files located at `./docs`. Some of
+them are:
 
-- [How to run EvoPIE](docs/how-to-run.md): local setup and deployment steps.
-- [Architecture](docs/architecture.md): system design, application workflow,
-  data flow, roles, quiz lifecycle, background processing, and deployment
-  shape.
-- [User guide](docs/user-guide.md): how instructors, students, and admins use
-  EvoPIE through the web interface.
-- [Reference](docs/reference.md): exact names, statuses, commands, environment
-  variables, paths, and other factual details.
-- [Troubleshooting](docs/troubleshooting.md): FAQ-style fixes for common
-  problems.
-- [Decision records](docs/decisions/): short records explaining important
-  project and documentation decisions.
-- [Documentation guide](docs/documentation.md): where documentation belongs and
-  when it should be updated.
+- [`./docs/how-to-run.md`](docs/how-to-run.md): local setup and deployment steps.
+- [`./docs/user-guide.md`](docs/user-guide.md): task-oriented instructions for
+  instructors, students, and admins using EvoPIE through the web interface.
+- [`./docs/troubleshooting.md`](docs/troubleshooting.md): FAQ-style fixes for
+  common problems.

@@ -17,7 +17,7 @@ An instructor creates questions. Each question has a correct answer and a set
 of distractors, which are wrong but plausible answer choices. The instructor
 then uses those questions to build quizzes and attaches quizzes to courses.
 
-Students take a quiz through a staged workflow.
+Students take a quiz through a staged workflow - i.e., in steps.
 
 In Step 1, each student answers the quiz individually. For each answer choice
 they do not select, students provide a justification explaining why that choice
