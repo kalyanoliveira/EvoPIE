@@ -371,14 +371,28 @@ pipenv run flask quiz deca-experiments \
 The `slurm` directory contains examples of shell scripts for running CLI
 experiments with simulated student groups.
 
+## Extending CLI commands
+
+CLI groups and commands are defined in `evopie/cli.py`. The application
+registers the `quiz`, `course`, `student`, and `deca` groups with Flask. Add a
+command to the appropriate `AppGroup` using its Click command decorator.
+
+The `quiz run` simulation uses Flask's test client to log in as simulated
+students and submit requests to student routes. The `deca-experiment` commands
+use Flask's test CLI runner to invoke other CLI commands as part of an
+experiment. These commands support research simulations and data analysis;
+they are not part of the normal student quiz workflow.
+
 ## Debugging
 
-Flask CLI commands can be debugged with VS Code launch configurations that run
-the `flask` module with `FLASK_APP=app.py`, `FLASK_ENV=development`, and
-command arguments such as:
+The repository includes VS Code launch configurations in
+`.vscode/launch.json`. They run the `flask` module with `FLASK_APP=app.py` and
+development settings. Examples include `CLI: DB init` and `CLI: quiz init`;
+select a configuration in VS Code's Run and Debug view to start it with
+breakpoint support. The corresponding Flask arguments are:
 
 ```text
-DB-inspect
+DB-init
 quiz init -nq 3 -nd 5
 ```
 
