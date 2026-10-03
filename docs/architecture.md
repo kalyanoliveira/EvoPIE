@@ -21,7 +21,11 @@ An instructor creates questions. Each question has a correct answer and a set
 of distractors, which are wrong but plausible answer choices. The instructor
 then uses those questions to build quizzes and attaches quizzes to courses.
 
-Students take a quiz through a staged workflow.
+Students take a quiz through a staged workflow. The quiz's status is the
+instructor-controlled stage available to the class; each student's attempt
+status records that student's progress through the stages. EvoPIE creates an
+attempt when a student first enters Step 1. A quiz may also require a
+step-specific passphrase.
 
 In Step 1, each student answers the quiz individually. For each answer choice
 they do not select, students provide a justification explaining why that choice

@@ -37,6 +37,9 @@ A quiz may move through these stages:
 
 ### Step 1
 
+When a student first enters Step 1, EvoPIE creates an attempt for that
+student. The quiz may require a step-specific passphrase.
+
 In Step 1, students answer the quiz individually.
 
 For each alternative they do not select, students write a justification
