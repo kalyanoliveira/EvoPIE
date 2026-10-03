@@ -165,6 +165,24 @@ EvoPIE can compute a total quiz grade from these components:
 - Step 3 distractor-design grade, when Step 3 is enabled.
 
 The component weights are quiz parameters that instructors can configure.
+EvoPIE converts available component scores to percentages and computes a
+weighted average. If a component is unavailable for an attempt, the remaining
+weights are rescaled to sum to one.
+
+For student $s$, let $C_s$ be the grade components available for that attempt,
+$g_c$ each component's score as a fraction from zero to one, and $w_c$ its
+configured weight. The normalized weight is:
+
+$$
+\widetilde{w}_{c,s} =
+\frac{w_c}{\sum_{d \in C_s} w_d}
+$$
+
+The total percentage is:
+
+$$
+G_s = 100 \cdot \sum_{c \in C_s} \widetilde{w}_{c,s} g_c
+$$
 
 ## Participation grade
 
@@ -175,8 +193,9 @@ $$
 A = \sum_{q \in Q} A_q
 $$
 
-During Step 2, each alternative $a$ is shown with $J_a$ justifications. The
-maximum number of likes available to give is:
+During Step 2, each alternative $a$ is shown with $J_a$ justifications. For a
+student's attempt, the maximum number of likes available is the total number
+shown:
 
 $$
 J = \sum_{a \in A} J_a
@@ -185,36 +204,35 @@ $$
 The limiting factor $LF$ is an instructor-configured percentage representing
 how many likes a student should give to receive full participation credit.
 
-The participation threshold is:
+The stored participation threshold is rounded to an integer:
 
 $$
-PT = LF \cdot J
+PT = \mathrm{round}(LF \cdot J)
 $$
 
-A student receives full participation credit when the number of likes they give
-falls in this range:
+The backend awards full participation credit when the number of likes is in
+this range:
 
 $$
-\mathrm{round}(0.8 \cdot PT) \leq \mathrm{likes\_given} \leq PT
+\lfloor 0.8 \cdot PT \rfloor \leq \mathrm{likes\_given} \leq PT
 $$
+
+The Step 2 page displays a lower bound using rounding instead of flooring. For
+some thresholds, the displayed lower bound can therefore differ from the
+backend grading bound.
 
 ## Justification grade
 
 For each student $s$, EvoPIE computes a justification score from likes received
 from other students.
 
-For each other student $k$:
-
-- $\mathrm{Likes}(k, s)$ is the number of likes that $k$ gave to $s$.
-- $\mathrm{Likes}(k)$ is the total number of likes that $k$ gave in the quiz.
-- $PT$ is the participation threshold.
-
-The contribution from $k$ is:
-
-$$
-\mathrm{Likes}(k, s) \cdot
-\min\left(\frac{PT}{\mathrm{Likes}(k)}, 1\right)
-$$
+For each other student $k$, $\mathrm{Likes}(k, s)$ is the number of likes
+that $k$ gave to $s$, and $\mathrm{Likes}(k)$ is the total number of likes
+that $k$ gave in the quiz. The participation threshold used to normalize
+student $k$'s likes is
+$PT_k = LF \cdot J_k$, where $J_k$ is the number of justifications shown to
+$k$. The implementation protects against division by zero by using a
+denominator of at least one.
 
 The student's justification score is:
 
@@ -222,11 +240,14 @@ $$
 \mathrm{score}(s) =
 \sum_{k \in S,\ k \neq s}
 \mathrm{Likes}(k, s) \cdot
-\min\left(\frac{PT}{\mathrm{Likes}(k)}, 1\right)
+\min\left(\frac{PT_k}{\max(\mathrm{Likes}(k), 1)}, 1\right)
 $$
 
-EvoPIE then assigns the justification grade by comparing that score to peer
-scores and placing it in a configured quartile.
+EvoPIE compares student scores and assigns the configured point value for each
+quartile. Defaults are 1 point for the first quartile, 3 for the second, 5 for
+the third, and 10 for the fourth. Instructors can change these values per
+quiz. The resulting points are normalized by the highest configured quartile
+value to calculate the justification component percentage.
 
 ## Justification dispatching
 
@@ -247,9 +268,14 @@ The implementation uses policy builders with names such as:
 - `j_tournament`: select the best candidate from a random tournament.
 - `j_slot_group_till`: split slots into groups and apply sub-policies.
 
-The current policy is a slot split. One group uses least-seen selection for
-fairness, while another group uses tournament-based selection with author Step
-1 performance as a quality signal.
+The current policy assigns about 60% of slots to least-seen selection, with
+random tie-breaking. The remaining slots use tournament selection based on the
+author's Step 1 score. Slot counts are rounded, with at least one slot assigned
+to least-seen selection. Tournament size is about 10% of its candidate pool,
+clamped between 1 and 7.
+
+Selected justifications are stored in the student's `attempt_justification`
+relationship and reused on subsequent page loads.
 
 ## Quiz models
 
