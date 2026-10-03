@@ -13,8 +13,9 @@ Instructors organize work around courses, questions, and quizzes.
 4. Create a quiz.
 5. Attach questions and distractors to the quiz.
 6. Attach the quiz to a course.
-7. Release the quiz by status or by deadline.
-8. Review grades and student work after students participate.
+7. Add students to the course.
+8. Release the quiz by status or by deadline.
+9. Review grades and student work after students participate.
 
 A question has a stem, a correct answer, and one or more distractors. A
 distractor is a wrong but plausible answer choice. Distractors are important
@@ -50,11 +51,15 @@ they wait until the instructor or deadlines move the quiz forward.
 In Step 2, students revisit the quiz.
 
 They can see selected justifications written by other students for each
-alternative. Students may revise their answers after reviewing those peer
-justifications.
+alternative. EvoPIE selects these from justifications already submitted and
+stores the selection on the attempt, so it stays the same when the student
+returns to the page. Students may revise their answers after reviewing those
+peer justifications.
 
-Students can also like useful peer justifications. Likes contribute to
-participation and justification-related grading.
+Students can also like peer justifications. The quiz configuration sets how
+many are shown, and the participation threshold determines the number of likes
+needed for participation credit. Likes also contribute to justification-related
+grading.
 
 ### Step 3
 

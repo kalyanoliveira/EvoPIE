@@ -11,13 +11,17 @@ justifications, likes, and grades for instruction and analysis.
 
 ## The learning flow
 
+Peer Instruction is an active-learning approach: students apply course concepts
+to questions and explain their thinking to peers. EvoPIE supports this exchange
+asynchronously through staged quiz activities.
+
 EvoPIE is organized around courses, questions, quizzes, and students.
 
 An instructor creates questions. Each question has a correct answer and a set
 of distractors, which are wrong but plausible answer choices. The instructor
 then uses those questions to build quizzes and attaches quizzes to courses.
 
-Students take a quiz through a staged workflow - i.e., in steps.
+Students take a quiz through a staged workflow.
 
 In Step 1, each student answers the quiz individually. For each answer choice
 they do not select, students provide a justification explaining why that choice
@@ -91,9 +95,11 @@ variants should be used for students. The default behavior relies on instructor
 selection, but EvoPIE also contains model implementations that can sample or
 adapt quiz content based on collected interactions.
 
-At a high level, quiz models exist so EvoPIE can use student responses and
-justifications as data. That data can help expose misconceptions and guide how
-future quiz content is selected or analyzed.
+Quiz models receive student response outcomes and maintain their own
+implementation-specific state. Depending on the selected model, those outcomes
+can guide which distractors appear in later quiz variants. The project aims to
+use interaction data to help instructors identify student misconceptions; the
+models do not all represent this data as a probability distribution.
 
 The current model choices include manual selection, random selection, Parallel
 Pareto Hill Climbing, and sampling strategies based on interaction features.
@@ -108,11 +114,17 @@ EvoPIE stores these justifications and tracks which justifications were shown
 to which student. Students can like useful justifications. Those likes
 contribute to participation and justification-related grading.
 
-The Step 2 justification selection policy has two goals. It should give each
-student a fair chance for their justifications to be seen, and it should show
-students some justifications that are likely to be useful. The current design
-combines least-seen selection for fairness with quality-oriented selection for
-some remaining slots.
+When a student first enters Step 2, EvoPIE selects from justifications already
+stored for the quiz. The current policy has two goals: give each student a fair
+chance for their justifications to be seen, and show some justifications that
+are likely to be useful. It combines least-seen selection for fairness with
+quality-oriented selection for some remaining slots. The selected set is saved
+on the student's quiz attempt and reused on later page loads.
+
+Quiz-model state is also stored in the database, in the model-specific state
+for that quiz's evolutionary process. SQLAlchemy version columns detect
+conflicting concurrent updates. Affected web requests roll back and retry when
+a stale update is detected.
 
 ## Grading and analytics
 

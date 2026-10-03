@@ -253,12 +253,28 @@ fairness, while another group uses tournament-based selection with author Step
 
 ## Quiz models
 
-EvoPIE currently describes these quiz model choices:
+The codebase contains these quiz model implementations:
 
-- manual selection, which uses the instructor-selected distractor pool;
-- random selection, which samples distractors at random;
-- Parallel Pareto Hill Climbing, implemented by `PphcQuizModel`;
-- sampling strategies based on computed interaction features.
+- `RandomQuizModel`, which samples distractors randomly;
+- `PphcQuizModel`, which evolves candidate distractor combinations;
+- `SamplingQuizModel`, which samples distractors using recorded interactions.
+
+The default base model also supports returning instructor-selected distractors
+without an adaptive model.
+
+In `PphcQuizModel`, each candidate variant is a set of distractors. The model
+creates child variants by changing distractor selections. For each student
+response, it gives a candidate a point when the student's selected answer is
+one of that candidate's distractors. It compares parent and child candidates
+using their response-based evaluations and may replace a parent with a child.
+It then mutates candidates for subsequent evaluations. This evaluation rewards
+candidate distractors that students have selected; it does not directly measure
+learning gains or misconception discovery.
+
+Quiz-model state is stored in the `evo_process` table's `impl_state` field.
+The `EvoProcess` model uses a SQLAlchemy version column to detect conflicting
+updates. The `retry_concurrent_update` decorator rolls back and reruns affected
+requests after a stale-data error.
 
 ## Certificate operations
 
