@@ -18,20 +18,20 @@ The schema includes these core tables:
 - `CourseStudent`: many-to-many relationship between courses and students.
 - `quiz`: quiz information and attached configuration.
 - `question`: question and answer pool.
-- `distractor`: wrong answer choices and final justifications.
-- `quiz_question`: question usage inside a quiz.
-- `relation_questions_vs_quizzes`: quiz-to-question relationship.
+- `distractor`: a plausible wrong answer and its reference justification.
+- `quiz_question`: a question as used in a quiz.
+- `relation_questions_vs_quizzes`: connects quizzes to quiz-question records.
 - `quiz_questions_hub`: distractors attached to a quiz question.
 - `quiz_attempt`: student answers for Step 1 and Step 2.
 - `justification`: student-provided justifications for distractors.
 - `attempt_justification`: justifications shown in an attempt.
 - `likes4_justifications`: likes on justifications.
-- `relation_questions_vs_attempts`: questions attached to an attempt.
+- `relation_questions_vs_attempts`: connects attempts to quiz-question records.
 - `evo_process`: quiz model state.
 - `glossary`: interaction post-processing data.
 - `invalidated_distractor`: Step 3 distractors proposed by students.
 - `student_knowledge`: student simulation data.
-- `widgetstore`: dashboard and interaction post-processing data.
+- `widgetstore`: cached dashboard graph objects and their context.
 
 Courses, quizzes, and questions are independent entities connected through
 relationship tables. A `quiz_question` represents a question as used in a quiz
@@ -255,7 +255,8 @@ fairness, while another group uses tournament-based selection with author Step
 
 The codebase contains these quiz model implementations:
 
-- `RandomQuizModel`, which samples distractors randomly;
+- `RandomQuizModel`, which samples three distractors per question by default
+  and reuses that selection;
 - `PphcQuizModel`, which evolves candidate distractor combinations;
 - `SamplingQuizModel`, which samples distractors using recorded interactions.
 
@@ -267,9 +268,11 @@ creates child variants by changing distractor selections. For each student
 response, it gives a candidate a point when the student's selected answer is
 one of that candidate's distractors. It compares parent and child candidates
 using their response-based evaluations and may replace a parent with a child.
-It then mutates candidates for subsequent evaluations. This evaluation rewards
-candidate distractors that students have selected; it does not directly measure
-learning gains or misconception discovery.
+After at least `pareto_n` student evaluations, it compares candidates across
+those students using Pareto domination. It then mutates candidates for
+subsequent evaluations. This evaluation rewards candidate distractors that
+students have selected; it does not directly measure learning gains or
+misconception discovery.
 
 Quiz-model state is stored in the `evo_process` table's `impl_state` field.
 The `EvoProcess` model uses a SQLAlchemy version column to detect conflicting
