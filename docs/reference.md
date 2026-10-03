@@ -263,6 +263,13 @@ The codebase contains these quiz model implementations:
 The default base model also supports returning instructor-selected distractors
 without an adaptive model.
 
+`SamplingQuizModel`'s `slot_based` strategy ranks candidate distractors using
+configured features computed from student responses. These include how often a
+distractor has been evaluated or selected, domination and nondomination
+relationships between distractors, duplicate or overlapping response patterns,
+and a response-based complexity score. The `strategy` and `hyperparams` values
+in the model state control the strategy and feature priorities.
+
 In `PphcQuizModel`, each candidate variant is a set of distractors. The model
 creates child variants by changing distractor selections. For each student
 response, it gives a candidate a point when the student's selected answer is
@@ -274,7 +281,23 @@ subsequent evaluations. This evaluation rewards candidate distractors that
 students have selected; it does not directly measure learning gains or
 misconception discovery.
 
-Quiz-model state is stored in the `evo_process` table's `impl_state` field.
+## Quiz model lifecycle
+
+`get_quiz_builder().load_quiz_model(quiz)` restores the active model class and
+its state from the quiz's `evo_process` record. If no active process exists,
+the caller can request creation of a model.
+
+When a student first enters Step 1, EvoPIE calls
+`quiz_model.get_for_evaluation(student_id)` to get the distractors for that
+attempt. After the student submits answers, EvoPIE calls
+`quiz_model.evaluate(student_id, answers)`. Both operations save the updated
+model-specific state in the `evo_process` table's `impl_state` field.
+
+`set_quiz_model(model_class, settings)` configures the builder's model class
+and settings; it is used by CLI experiments. The application package currently
+calls `set_quiz_model(None)`, disabling model creation by default in the web
+application.
+
 The `EvoProcess` model uses a SQLAlchemy version column to detect conflicting
 updates. The `retry_concurrent_update` decorator rolls back and reruns affected
 requests after a stale-data error.
@@ -282,7 +305,12 @@ requests after a stale-data error.
 ## Certificate operations
 
 The current production deployment uses Let's Encrypt certificates. Certbot
-renews certificates on a 90-day cycle.
+renews certificates on a 90-day cycle. To list certificates known to certbot,
+run:
+
+```bash
+sudo certbot certificates
+```
 
 The server certificate directory contains:
 
