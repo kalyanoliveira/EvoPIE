@@ -271,15 +271,21 @@ The policy has two goals:
 - fairness: give each student a chance for their justifications to be seen;
 - quality: show some justifications that are likely to be useful.
 
-The implementation uses policy builders with names such as:
+Implemented policy builders include:
 
 - `j_random`: select a random justification.
 - `j_least_seen`: prefer justifications shown fewer times.
 - `j_not_seen`: prefer justifications not seen a configured number of times.
 - `j_tournament`: select the best candidate from a random tournament.
+- `j_e_greedy`: choose a fitness-best candidate with a configured probability;
+  otherwise, apply a fallback policy.
+- `j_softmax`: sample according to candidate fitness and a temperature value.
+- `j_fitness_proportional`: select with probability proportional to fitness.
 - `j_slot_group_till`: split slots into groups and apply sub-policies.
 
-The current policy assigns about 60% of slots to least-seen selection, with
+The current policy uses `j_least_seen` and `j_tournament`; the other builders
+are implemented alternatives, not part of the current policy. It assigns about
+60% of slots to least-seen selection, with
 random tie-breaking. The remaining slots use tournament selection based on the
 author's Step 1 score. Slot counts are rounded, with at least one slot assigned
 to least-seen selection. Tournament size is about 10% of its candidate pool,
