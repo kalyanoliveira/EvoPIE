@@ -424,8 +424,10 @@ These route groups are part of the REST foundation:
 - `GET /questions`: list questions.
 - `POST /questions`: create a question.
 - `GET /questions/<id>`: read a question.
-- `PUT /questions/<id>`: update a question.
-- `DELETE /questions/<id>`: delete a question.
+- `PUT /questions/<id>`: update a question's title, stem, and answer; it does
+  not update its distractors.
+- `DELETE /questions/<id>`: delete the question from the database; deletion is
+  not a soft delete.
 - `GET /questions/<id>/distractors`: list distractors for a question.
 - `POST /questions/<id>/distractors`: create a distractor for a question.
 - `GET /distractors/<id>`: read a distractor.
@@ -444,4 +446,4 @@ These route groups are part of the REST foundation:
 - `POST /quizzes/<id>/take`: submit answers for the current step.
 - `GET /quizzes/<id>/responses`: read student responses for a quiz.
 - `GET /quizzes/<id>/status`: read a quiz status.
-- `PUT /quizzes/<id>/status`: set a quiz status.
+- `POST /quizzes/<id>/status`: set a quiz status.
