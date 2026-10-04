@@ -16,13 +16,9 @@ RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
 ENV TZ="America/New_York"
 
 WORKDIR /app
-ARG EVOPIE_GIT_REF=master
-RUN echo "Building EvoPIE from ${EVOPIE_GIT_REF}"
-RUN git clone https://github.com/cereal-lab/EvoPIE.git .
-RUN git checkout "${EVOPIE_GIT_REF}"
-
+COPY Pipfile Pipfile.lock ./
 RUN pipenv sync
-#RUN pipenv run flask DB-reboot
+COPY . .
 
 ENV EVOPIE_UPDATER_SLEEP 360
 ENTRYPOINT [ "pipenv", "run", "python", "-m", "updater" ]
