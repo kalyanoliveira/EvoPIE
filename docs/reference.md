@@ -164,6 +164,10 @@ EvoPIE can compute a total quiz grade from these components:
 - Participation grade.
 - Step 3 distractor-design grade, when Step 3 is enabled.
 
+Step 1 and Step 2 correctness each award one point per correctly answered
+question. Their component scores are the fraction of the step's questions
+answered correctly.
+
 The component weights are quiz parameters that instructors can configure.
 EvoPIE converts available component scores to percentages and computes a
 weighted average. If a component is unavailable for an attempt, the remaining
@@ -244,10 +248,17 @@ $$
 $$
 
 EvoPIE compares student scores and assigns the configured point value for each
-quartile. Defaults are 1 point for the first quartile, 3 for the second, 5 for
-the third, and 10 for the fourth. Instructors can change these values per
-quiz. The resulting points are normalized by the highest configured quartile
-value to calculate the justification component percentage.
+quartile. The first through fourth quartiles represent the lowest through
+highest score groups. The implementation uses the first quartile, median, and
+third quartile of the sorted scores as cutoffs; a score equal to a cutoff is
+assigned to the higher group. If a cohort is too small to form a lower or upper
+half, the implementation uses 0 or the median as that cutoff. Ties and small
+cohorts can make the groups differ from exact 25% shares.
+
+Defaults are 1 point for the first quartile, 3 for the second, 5 for the third,
+and 10 for the fourth. Instructors can change these values per quiz. The
+resulting points are normalized by the highest configured quartile value to
+calculate the justification component percentage.
 
 ## Justification dispatching
 
