@@ -4,10 +4,10 @@ Run the commands from the repository root. Choose one of these five modes.
 
 ## 1. uv local
 
-Install Python 3.8 or newer and uv, then run:
+Install Python 3.8 or newer and [uv](https://docs.astral.sh/uv/), then run:
 
 ```bash
-uv sync
+uv sync --locked
 export FLASK_APP=evopie/__init__.py
 uv run flask DB-init
 uv run flask run
