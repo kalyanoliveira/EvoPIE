@@ -23,9 +23,9 @@ RUN git checkout "${EVOPIE_GIT_REF}"
 
 RUN uv sync --frozen --no-dev
 
-#ENTRYPOINT [ "uv", "run", "--frozen", "flask", "run", "--host", "0.0.0.0" ]
-#ENTRYPOINT [ "uv", "run", "--frozen", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:APP" ]
-#ENTRYPOINT [ "uv", "run", "--frozen", "gunicorn", "-w", "4", "-b", "0.0.0.0:5010", "app:APP" ]
+#ENTRYPOINT [ "uv", "run", "--frozen", "--no-sync", "flask", "run", "--host", "0.0.0.0" ]
+#ENTRYPOINT [ "uv", "run", "--frozen", "--no-sync", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:APP" ]
+#ENTRYPOINT [ "uv", "run", "--frozen", "--no-sync", "gunicorn", "-w", "4", "-b", "0.0.0.0:5010", "app:APP" ]
 ENTRYPOINT [ "./evopie/entrypoint.sh" ]
 
 # docker build -t evopie .

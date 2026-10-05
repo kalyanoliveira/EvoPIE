@@ -26,4 +26,4 @@ RUN uv sync --frozen --no-dev
 #RUN uv run --frozen flask DB-reboot
 
 ENV EVOPIE_UPDATER_SLEEP 360
-ENTRYPOINT [ "uv", "run", "--frozen", "python", "-m", "updater" ]
+ENTRYPOINT [ "uv", "run", "--frozen", "--no-sync", "python", "-m", "updater" ]
