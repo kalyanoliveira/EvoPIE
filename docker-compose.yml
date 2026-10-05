@@ -38,6 +38,7 @@ x-local-watch-ignore: &local-watch-ignore
   - __pycache__/
   - '*.pyc'
   - venv/
+  - .venv/
   - .vscode/
   - .DS_Store
   - data/

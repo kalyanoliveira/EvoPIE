@@ -15,10 +15,10 @@ PY
 uv run --frozen flask DB-init
 uv run --frozen python3 datalayer/updateglossary.py "$DB_FILE"
 # Production version: 
-# pipenv run gunicorn -w 4 -b 0.0.0.0:5000 app:APP
+# uv run --frozen gunicorn -w 4 -b 0.0.0.0:5000 app:APP
 # Dev version: 
 uv run --frozen gunicorn --log-level debug -w 1 -b 0.0.0.0:5000 app:APP
-#pipenv run gunicorn --log-level debug -w 1 -b 0.0.0.0:5010 app:APP
+#uv run --frozen gunicorn --log-level debug -w 1 -b 0.0.0.0:5010 app:APP
 # seems to be old syntax:
-#pipenv run gunicorn --reload --workers 1 -b 0.0.0.0:5000 app:APP --debug --debugger-address="0.0.0.0:5678"
+#uv run --frozen gunicorn --reload --workers 1 -b 0.0.0.0:5000 app:APP --debug --debugger-address="0.0.0.0:5678"
 

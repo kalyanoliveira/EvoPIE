@@ -23,7 +23,7 @@ RUN git clone https://github.com/cereal-lab/EvoPIE.git .
 RUN git checkout "${EVOPIE_GIT_REF}"
 
 RUN uv sync --frozen --no-dev
-#RUN pipenv run flask DB-reboot
+#RUN uv run --frozen flask DB-reboot
 
 ENV EVOPIE_UPDATER_SLEEP 360
 ENTRYPOINT [ "uv", "run", "--frozen", "python", "-m", "updater" ]
